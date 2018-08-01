@@ -2,11 +2,14 @@
 #![deny(unsafe_code)]
 #![deny(warnings)]
 #![feature(proc_macro)]
+#![feature(proc_macro_gen)]
 #![no_std]
 
 extern crate cortex_m;
+extern crate cortex_m_rt as rt;
 extern crate cortex_m_rtfm as rtfm;
 extern crate stm32f103xx;
+extern crate panic_semihosting;
 
 use cortex_m::peripheral::syst::SystClkSource;
 use rtfm::{app, Threshold};
@@ -60,7 +63,7 @@ fn init(mut p: init::Peripherals, r: init::Resources) {
     // configure the system timer to generate one interrupt every second
     p.core.SYST.set_clock_source(SystClkSource::Core);
     p.core.SYST.set_reload(8_000_000); // 1s
-    p.core.SYST.enable_interrupt();
+    p.core.SYST.enable_interrupt();// if commented, no crash
     p.core.SYST.enable_counter();
 }
 
